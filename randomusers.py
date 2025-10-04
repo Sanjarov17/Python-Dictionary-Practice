@@ -11,7 +11,9 @@ def get_full_names(data: dict) -> list[str]:
     Returns:
         list[str]: List of full names.
     """
-    pass
+    def get_full_names(data: dict) -> list[str]:
+        return [f"{u['name']['first']} {u['name']['last']}" for u in data["results"]]
+
 
 
 def get_users_by_country(data: dict, country: str) -> list[dict]:
@@ -25,7 +27,12 @@ def get_users_by_country(data: dict, country: str) -> list[dict]:
     Returns:
         list[dict]: List of dictionaries containing full name and email of matching users.
     """
-    pass
+    def get_users_by_country(data: dict, country: str) -> list[dict]:
+        return [
+            {"name": f"{u['name']['first']} {u['name']['last']}", "email": u["email"]}
+            for u in data["results"]
+            if u["location"]["country"] == country
+    ]
 
 
 def count_users_by_gender(data: dict) -> dict:
@@ -38,7 +45,12 @@ def count_users_by_gender(data: dict) -> dict:
     Returns:
         dict: Dictionary with gender as keys and count as values.
     """
-    pass
+    def count_users_by_gender(data: dict) -> dict:
+        counts = {}
+        for u in data["results"]:
+            gender = u["gender"]
+            counts[gender] = counts.get(gender, 0) + 1
+        return counts
 
 
 def get_emails_of_older_than(data: dict, age: int) -> list[str]:
@@ -52,7 +64,9 @@ def get_emails_of_older_than(data: dict, age: int) -> list[str]:
     Returns:
         list[str]: List of email addresses.
     """
-    pass
+    def get_emails_of_older_than(data: dict, age: int) -> list[str]:
+        return [u["email"] for u in data["results"] if u["dob"]["age"] > age]
+
 
 
 def sort_users_by_age(data: dict, descending: bool = False) -> list[dict]:
@@ -93,7 +107,9 @@ def get_average_age(data: dict) -> float:
     Returns:
         float: Average age.
     """
-    pass
+    def get_average_age(data: dict) -> float:
+        ages = [u["dob"]["age"] for u in data["results"]]
+        return sum(ages) / len(ages) if ages else 0
 
 
 def group_users_by_nationality(data: dict) -> dict:
@@ -119,7 +135,9 @@ def get_all_coordinates(data: dict) -> list[tuple[str, str]]:
     Returns:
         list[tuple[str, str]]: List of coordinate tuples.
     """
-    pass
+    def get_all_coordinates(data: dict) -> list[tuple[str, str]]:
+        return [(u["location"]["coordinates"]["latitude"], u["location"]["coordinates"]["longitude"]) for u in data["results"]]
+
 
 
 def get_oldest_user(data: dict) -> dict:
@@ -146,7 +164,11 @@ def find_users_in_timezone(data: dict, offset: str) -> list[dict]:
     Returns:
         list[dict]: List of users with full name and city.
     """
-    pass
+    def find_users_in_timezone(data: dict, offset: str) -> list[dict]:
+        return [
+        {"name": f"{u['name']['first']} {u['name']['last']}", "city": u["location"]["city"]}
+        for u in data["results"]
+        if u["location"]["timezone"]["offset"] == offset]
 
 
 def get_registered_before_year(data: dict, year: int) -> list[dict]:
